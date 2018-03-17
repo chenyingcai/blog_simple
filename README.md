@@ -63,11 +63,12 @@ git clone https://github.com/chenyingcai/hexo-theme-Claudia.git themes/Claudia
    找到`# Development`改为:
    ```ruby
    # Development
-			deploy:
-					type: git
-					  repo: 
-								  git@github.com:chenyingcai/blog.git
-```
+	deploy:
+	type: git
+		repo: 
+			git@github.com:chenyingcai/blog.git
+   ```
+
 ---
 
 ##第四步: 生成
@@ -79,9 +80,11 @@ git clone https://github.com/chenyingcai/hexo-theme-Claudia.git themes/Claudia
 ---
 ##第五步: 发布预览
 ---
+
 ```bash
 hexo s
 ```
+
 还记得开放的`-p 4000:4000`端口吗, 在这一步就用到了这个端口, 我们可以在这预览博客.
 打开[localhost:4000](localhost:4000)就能够预览我们的博客了
 
@@ -90,7 +93,31 @@ hexo s
 ##第六步: 清理
 
 ---
+
 ```bash
 hexo clean
 ```
+
+---
+
+##常见问题
+
+---
+
+1. 在jupyter 的terminal 中操作时 push 项目容易出现无法使用ssh传输的情况, 也就是说我们这时候不能将 本地 通过 git@github.com 关联到远程
+这个时候我们就要通过网站 https://github.com/{在github上的用户名}/{repo(项目)名称}.git 进行关联.
+    先解除remote关联
+
+```bash
+git remote remove origin
+```
+
+    然后重新关联
+
+```bash
+git remote add origin https://github.com/{在github上的用户名}/{repo(项目)名称}.git
+```
+
+    之后在``git status``没有问题后, ``git push -u origin master`` 上传到对应项目的远程库(origin, 这里origin代表对应项目的远程库)的master分支(一般在github上**默认**每一个项目的分支为master)
+
 ---
