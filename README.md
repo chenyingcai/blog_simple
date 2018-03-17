@@ -113,6 +113,9 @@ hexo d
 
 这时候就部署了, 我们直接输入chenyingcai.github.io, 就能看到我们的博客了, 但是问题来了, 这里回忆一下，我们在之前的**主配置文件** `_config` 中的 `# Development` 项中写入的地址是 https://chenyingcai/chenyingcai.github.io.git .一旦我们完成了以上的部署之后, 在我们的github中的repo`chenyingcai.github.git` 将全部修改为我们的博客这一个静态网页所需要的一系列支持性文件, 我们之前hexo的项目都将会被删除，但本地还保留着我们之前努力的成果，所以为了之后连续性的工作，我们需要另外创建一个项目, 或者说在github上另外闯将一个repo, 并且repo的名字应该尽量避免与 `chenyingcai.github.io` 重复，于是我们进行以下操作，保留我们之前的劳动成果并为之后的持续开发维护好先前的基础
 
+1. 在github中创建一个新的项目blog
+
+2. 输入下列代码
 ```
 git remote remove origin # 删除远程关联
 git remote add origin https://github.com/chenyingcai/blog.git # 关联一个新的git项目
