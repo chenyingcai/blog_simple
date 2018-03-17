@@ -1,0 +1,11 @@
+FROM eipdev/alpine-jupyter-notebook:latest
+MAINTAINER CHEN_Yingcai <chenyingcai.github.io>
+RUN \
+    apk --update --no-progress --no-cache add git openssh nodejs-npm \
+    && rm -rf /var/cache/apk/*
+RUN \
+    npm install hexo-cli -g
+EXPOSE 8888
+WORKDIR /opt/notebook
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
