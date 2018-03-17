@@ -37,7 +37,7 @@ docker run -d -p 8888:8888 -p 4000:4000 -v $PWD:/opt/notebook githubblog/jupyter
     这里申请了两个地址:localhost:8888(这个是jupyter的主页面) localhost:4000(这个是我们预览博客需要用的地址, 后面会提到)
 ---
 
-##第二步: 创建一个博客
+## 第二步: 创建一个博客
 
 ---
 
@@ -58,7 +58,7 @@ git clone https://github.com/chenyingcai/hexo-theme-Claudia.git themes/Claudia
 
 ---
 
-##第三步: 修改_config.yml配置
+## 第三步: 修改_config.yml配置
 
 ---
 
@@ -82,7 +82,7 @@ git clone https://github.com/chenyingcai/hexo-theme-Claudia.git themes/Claudia
 
 ---
 
-##第四步: 生成
+## 第四步: 生成
 
 ---
 
@@ -91,7 +91,7 @@ git clone https://github.com/chenyingcai/hexo-theme-Claudia.git themes/Claudia
 
 ---
 
-##第五步: 发布预览
+## 第五步: 发布预览
 
 ---
 
@@ -105,7 +105,7 @@ hexo s
 
 ---
 
-##第六步: 清理
+## 第六步: 清理
 
 ---
 
@@ -115,7 +115,7 @@ hexo clean
 
 ---
 
-##常见问题
+## 常见问题
 
 ---
 
