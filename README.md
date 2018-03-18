@@ -6,7 +6,7 @@
 ###### 2018-03-17 14:24:31 星期六
 ---
 
-## 第一步: 使用eipdev/alpine-jupyter-notebook
+## 第一步: 使用 [eipdev/alpine-jupyter-notebook](https://hub.docker.com/r/eipdev/alpine-jupyter-notebook/)
 
 ---
 
@@ -18,11 +18,6 @@ MAINTAINER CHEN_Yingcai <chenyingcai.github.io>
 RUN \
     apk --update --no-progress --no-cache add git openssh nodejs-npm \
     && rm -rf /var/cache/apk/*
-RUN \
-    npm install hexo-cli -g \
-    && npm install hexo-deployer-git --save \
-    && cd opt/notebook \
-    && npm install
 EXPOSE 8888
 WORKDIR /opt/notebook
 ENTRYPOINT ["/sbin/tini", "--"]
@@ -44,7 +39,19 @@ docker run -d -p 8888:8888 -p 4000:4000 -v $PWD:/opt/notebook githubblog/jupyter
 
 ---
 
-在localhost:8888 的页面中 选中terminal进入控制面板, 敲入下面的代码:
+在localhost:8888 的页面中 选中terminal进入控制面板(这一步很重要), 然后我们在这个terminal环境中下载我们需要的hexo. 这里主要是用到了npm 来安装hexo. 至于为什么不直接在我们的dockerfile中将hexo一步到位地的安装hexo, 由于能力有限, 经过几次非常努力地去构建都没能成功. 回到我们安装hexo, 这里在terminal中依次输入:
+
+```bash
+npm install
+npm install hexo-cli -g                             # hexo 主体引擎
+npm install hexo-deployer-git --save    # 部署到github上的引擎
+```
+
+**注意**这里必须先是`npm install` 再有其他的安装`hexo-cli` 等等, 至于为什么? 可能是是npm 要在当前目录运行需要初始化吧?(类似于hexo 也需要在工作目录`hexo init`). 而且在输入` npm install`之后, 就会在本地生成一个`node_modules`文件夹和`package.json` 文件. 
+
+初始化hexo, 输入以下
+
+
 ```bash
 hexo init chenyingcai.github.io
 ```
@@ -74,12 +81,12 @@ git clone https://github.com/chenyingcai/hexo-theme-Claudia.git themes/Claudia
 2. 修改发布配置
 
     找到`# Development`改为:
-    ```python
-    # Development
-        deploy:
-	    type: git
-            repo: 
-                https://github.com/chenyingcai/chenyingcai.github.io.git
+```python
+# Development
+deploy:
+  type: git
+  repo: 
+    https://github.com/chenyingcai/chenyingcai.github.io.git
 
    ```
 
@@ -110,8 +117,14 @@ hexo s
 
 ## 第六步: 部署
 
-```
-hexo d
+在使用`hexo d`进行部署前, 我们还需要认证我们的git(请注意, 我们这时候的一些列操作都是在docker容器中操作, 所以需要认证一下当前) , 输入以下
+
+```bash
+git config --global user.name "chenyingcai"
+git config --global user.email "cheningcai@outlook.com"
+git remote remove origin                        #重新关联远程
+git remote add origin https://github.com/chenyingcai/chenyingcai.github.io.git
+hexo d                                          #启动hexo部署器部署博客
 ```
 
 这时候就部署了, 我们直接输入chenyingcai.github.io, 就能看到我们的博客了, 但是问题来了, 这里回忆一下，我们在之前的**主配置文件** `_config` 中的 `# Development` 项中写入的地址是 https://chenyingcai/chenyingcai.github.io.git .一旦我们完成了以上的部署之后, 在我们的github中的repo`chenyingcai.github.git` 将全部修改为我们的博客这一个静态网页所需要的一系列支持性文件, 我们之前hexo的项目都将会被删除，但本地还保留着我们之前努力的成果，所以为了之后连续性的工作，我们需要另外创建一个项目, 或者说在github上另外闯将一个repo, 并且repo的名字应该尽量避免与 `chenyingcai.github.io` 重复，于是我们进行以下操作，保留我们之前的劳动成果并为之后的持续开发维护好先前的基础
@@ -162,35 +175,3 @@ git remote add origin https://github.com/{在github上的用户名}/{repo(项目
 
 ---
 
-## 修复
-
----
-
-1. 2018-03-17 22:43:13 星期六(Paris)
-* 之前使用容器`githubblog/jupyter_alpine:v2` 发现无法使用hexo, 在位置`/opt/notebook`输入`hexo -v`出现错误
-
-```
-Error Local hexo not found in /opt/notebook
-Error Try running: 'npm install hexo --save
-```
-
-之后在位置`opt/notebook`中输入`npm install`, 然后位置`opt/notebook`生成`note_modules`文件夹和文件`package.json`. 输入`hexo -v` , 问题解决.
-
-
-所以我们应该修改dockerfile_githubblog_alpine_jupyter的第7行. 将以下: 
-
-```
-RUN \
-    npm install hexo-cli -g
-```
-
-改为:
-
-```
-RUN \
-    && npm install hexo-cli -g \
-    && npm install hexo-deployer-git --save \
-    && cd opt/notebook \
-    && npm install
-```
----
