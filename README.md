@@ -13,13 +13,16 @@
 1. `docker pull eipdev/alpine-jupyter-notebook`
 2.  订制自己的 **DockerFile**: dockerfile_githubblog_alpine_jupyter
 ```ruby
-FROM eipdev/alpine-jupyter-notebook
+FROM eipdev/alpine-jupyter-notebook:latest
 MAINTAINER CHEN_Yingcai <chenyingcai.github.io>
 RUN \
     apk --update --no-progress --no-cache add git openssh nodejs-npm \
     && rm -rf /var/cache/apk/*
 RUN \
-    npm install hexo-cli -g
+    && npm install hexo-cli -g \
+    && npm install hexo-deployer-git --save \
+    && cd opt/notebook \
+    && npm install
 EXPOSE 8888
 WORKDIR /opt/notebook
 ENTRYPOINT ["/sbin/tini", "--"]
