@@ -19,7 +19,7 @@ RUN \
     apk --update --no-progress --no-cache add git openssh nodejs-npm \
     && rm -rf /var/cache/apk/*
 RUN \
-    && npm install hexo-cli -g \
+    npm install hexo-cli -g \
     && npm install hexo-deployer-git --save \
     && cd opt/notebook \
     && npm install
